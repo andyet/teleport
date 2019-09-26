@@ -108,6 +108,10 @@ type Config struct {
 
 	// ProxySettings is a settings communicated to proxy
 	ProxySettings client.ProxySettings
+
+	// ServerFeatures is a list of additional features supported by the server
+	// to be returned as a part of the ping response.
+	ServerFeatures []string
 }
 
 type RewritingHandler struct {
@@ -515,6 +519,7 @@ func (h *Handler) ping(w http.ResponseWriter, r *http.Request, p httprouter.Para
 		Proxy:            h.cfg.ProxySettings,
 		ServerVersion:    teleport.Version,
 		MinClientVersion: teleport.MinClientVersion,
+		ServerFeatures:   h.cfg.ServerFeatures,
 	}, nil
 }
 
@@ -528,8 +533,9 @@ func (h *Handler) pingWithConnector(w http.ResponseWriter, r *http.Request, p ht
 	}
 
 	response := &client.PingResponse{
-		Proxy:         h.cfg.ProxySettings,
-		ServerVersion: teleport.Version,
+		Proxy:          h.cfg.ProxySettings,
+		ServerVersion:  teleport.Version,
+		ServerFeatures: h.cfg.ServerFeatures,
 	}
 
 	if connectorName == teleport.Local {
