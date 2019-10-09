@@ -1,16 +1,4 @@
-# CLI Docs
-
-Here is a summary of the tools that Teleport provides.
-
-| Tool           | Description
-|----------------|------------------
-| [teleport](#teleport) | A binary daemon which runs one or more of the `node`, `auth` or `proxy` services. Configure the services with the `--roles` flag or with a `.yaml` configuration file.
-| [tctl](#tctl)    | Cluster administration tool used to invite nodes to a cluster and manage user accounts. `tctl` can only be used on the same machine where the `auth` service/role is running.
-| [tsh](#tsh)| Teleport client tool, similar to OpenSSH's `ssh`. It is used to log into remote SSH nodes, list and search for nodes in a cluster, securely upload/download files, etc. `tsh` can work in conjunction with `ssh` by acting as an SSH agent.
-
 # teleport
-
-Teleport
 
 ## teleport start
 `teleport start` starts one or more teleport services
