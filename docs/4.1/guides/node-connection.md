@@ -1,0 +1,1 @@
+When a user executes [`tsh --proxy=p ssh saturn`](../cli-docs/#tsh-ssh) command, trying to log into the Node "saturn", the [`tsh`](../cli-docs/#tsh) tool will establish HTTPS connection to the proxy "p" and authenticate before it will be given access to "saturn".
