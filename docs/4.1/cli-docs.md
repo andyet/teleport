@@ -55,6 +55,20 @@ None
 
 # tsh
 
+`tsh` is similar in nature to OpenSSH `ssh` or `scp`. In fact, it has subcommands named after
+them so you can call:
+
+```bsh
+$ tsh --proxy=p ssh -p 1522 user@host
+$ tsh --proxy=p scp -P example.txt user@host/destination/dir
+```
+
+Unlike `ssh`, `tsh` is very opinionated about authentication: it always uses auto-expiring
+keys and it always connects to Teleport nodes via a proxy.
+
+When `tsh` logs in, the auto-expiring key is stored in `~/.tsh` and is valid for 12 hours by
+default, unless you specify another interval via `--ttl` flag (capped by the server-side configuration).
+
 ## Global Flags
 
 | Name | Default Value(s) | Allowed Value(s) | Description
@@ -93,3 +107,13 @@ None
 ## tsh status
 
 # tctl
+
+`tctl` is used to administer a Teleport cluster. It connects to an Auth Server and allows a cluster administrator to manage [Nodes](./concepts/nodes) and [Users](./concepts/users) in the cluster.
+
+`tctl` is also a tool which can be used to modify the dynamic configuration of the
+cluster, like creating new user roles or connecting trusted clusters.
+
+## Teleport CLI Tools
+
+Teleport offers two command line tools. `tsh` is a client tool used by the end users, while
+`tctl` is used for cluster administration.
