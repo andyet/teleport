@@ -22,6 +22,7 @@
 | `--labels`      | none | **string** comma-separated list | label this node
 | `--insecure`    | none | none | disable certificate validation on Proxy Service, validation still occurs on Auth Service.
 | `--fips`        | none | none | start Teleport in FedRAMP/FIPS 140-2 mode.
+| `--diag-addr`   | none | none | Enable diagnostic endpoints
 
 ## teleport status
 `teleport status` shows the status of a Teleport connection. This command is only available from inside of a recorded SSH session.
@@ -40,12 +41,14 @@
 
 # tsh
 
+`tsh` is a CLI client used by Teleport Users. It allows users to interact with current and past sessions on the cluster, copy files to and from nodes, and list information about the cluster.
+
 ## tsh Global Flags
 
 | Name | Default Value(s) | Allowed Value(s) | Description
 |------|---------|----------------|----------------------------|
 | `-l, --login`| none | an identity name | the login identity that the Teleport User should use
-| `--proxy`| none | a hostname which resolves to an IP for clients | set SSH proxy address
+| `--proxy`| none | `host:https_port[,ssh_proxy_port]` | set SSH proxy address
 | `--user`| `$USER` | none | the Teleport User name
 | `--ttl`| none (ttl unrestricted) | relative duration like 5s, 2m, or 3h | set time to live for a SSH session
 | `-i, --identity`| none | **string** filepath | Identity file
@@ -58,11 +61,15 @@
 
 ## tsh help
 
-Print help
+Prints help
+
+**Usage** `tsh help`
 
 ## tsh version
 
-Print client version
+Prints client version
+
+**Usage** `tsh version`
 
 ## tsh ssh
 
@@ -104,6 +111,8 @@ tsh ssh --proxy proxy.example.com --user teleport -d root@proxy.example.com
 
 ## tsh join
 
+Joins an active session
+
 **Usage**: `tsh join [<flags>] <session-id>`
 
 ### Arguments
@@ -126,35 +135,250 @@ These flags are available for all commands `--login, --proxy, --user, --ttl, --i
 ### Examples
 
 ```
-tsh --proxy proxy.example.com join <session-uuid>
+tsh --proxy proxy.example.com join <session-id>
 ```
 
 ## tsh play
 
+Plays back a prior session
+
+**Usage**: `tsh play [<flags>] <session-id>`
+
+### Arguments
+
+`<session-id>`
+
+*  `session-id` The UUID of the a past Teleport Session obtained by `teleport status` within the session or from the Web UI.
+
+### Flags
+
+| Name | Default Value(s) | Allowed Value(s) | Description
+|------|---------|----------------|----------------------------|
+| `--cluster`| none | a cluster_name | Specify the cluster to connect
+
+### [Global Flags](./#tsh-global-flags)
+
+These flags are available for all commands `--login, --proxy, --user, --ttl, --identity, --cert-format, --insecure, --auth, --skip-version, --debug, --jumphost`. Run `tsh help <subcommand>` or see the [Global Flags Section](./#tsh-global-flags)
+
+### Examples
+
+```
+tsh --proxy proxy.example.com play <session-id>
+```
+
 ## tsh scp
 
-```bsh
+Copies files from source to dest
 
-$ tsh --proxy=p scp -P example.txt user@host/destination/dir
+**Usage** `usage: tsh scp [<flags>] <source>... <dest>`
+<!--TODO Confirm which flags are supported, and whether supports multiple sources-->
+
+### Arguments
+
+* `<source>` - filepath to copy
+* `<dest>` - target destination
+
+### Flags
+
+| Name | Default Value(s) | Allowed Value(s) | Description
+|------|---------|----------------|----------------------------|
+| `--cluster`| none | a cluster_name | Specify the cluster to connect
+| `-r, --recursive` | none | none | Recursive copy of subdirectories
+| `-P, --port` | none | port number | Port to connect to on the remote host
+| `-q, --quiet` | none | none | Quiet mode
+
+### [Global Flags](./#tsh-global-flags)
+
+These flags are available for all commands `--login, --proxy, --user, --ttl, --identity, --cert-format, --insecure, --auth, --skip-version, --debug, --jumphost`. Run `tsh help <subcommand>` or see the [Global Flags Section](./#tsh-global-flags)
+
+### Examples
+
+```bsh
+$ tsh --proxy=proxy.example.com scp -P example.txt user@host/destination/dir
 ```
 
 ## tsh ls
 
+List cluster nodes
+
+**Usage** `usage: tsh ls [<flags>] [<label>]` <!--TODO: label? or labels?-->
+
+### Arguments
+
+* `<label>` - `key=value` label to filer nodes by
+
+### Flags
+
+| Name | Default Value(s) | Allowed Value(s) | Description
+|------|---------|----------------|----------------------------|
+| `-v, --verbose`| none | none | also print Node ID
+
+### [Global Flags](./#tsh-global-flags)
+
+These flags are available for all commands `--login, --proxy, --user, --ttl, --identity, --cert-format, --insecure, --auth, --skip-version, --debug, --jumphost`. Run `tsh help <subcommand>` or see the [Global Flags Section](./#tsh-global-flags)
+
+### Examples
+
+```bsh
+$ tsh ls
+Node Name Address            Labels
+--------- ------------------ ------
+grav-00   10.164.0.0:3022
+grav-01   10.156.0.2:3022
+$ tsh ls -v
+Node Name Node ID                              Address            Labels
+--------- ------------------------------------ ------------------ ------
+grav-00   52e3e46a-372f-494b-bdd9-a1d25b9d6dec 10.164.0.0:3022
+grav-01   73d86fc7-7c4b-42e3-9a5f-c46e177a29e8 10.156.0.2:3022
+```
+
 ## tsh clusters
+
+**Usage**: `tsh clusters [<flags>]`
+
+### Flags
+
+| Name | Default Value(s) | Allowed Value(s) | Description
+|------|---------|----------------|----------------------------|
+| `-q, --quiet`| none | none | no headers in output
+
+### [Global Flags](./#tsh-global-flags)
+
+These flags are available for all commands `--login, --proxy, --user, --ttl, --identity, --cert-format, --insecure, --auth, --skip-version, --debug, --jumphost`. Run `tsh help <subcommand>` or see the [Global Flags Section](./#tsh-global-flags)
+
+### Examples
+
+```bsh
+$ tsh clusters
+Cluster Name Status
+------------ ------
+grav-00      online
+$ tsh clusters --quiet
+grav-00 online
+```
 
 ## tsh login
 
-If User `teleport` has identities `root,nginx`, the value should be `root` or `nginx`
+Logs in to the cluster. When `tsh` logs in, the auto-expiring key is stored in `~/.tsh` and is valid for 12 hours by default, unless you specify another interval via `--ttl` flag (capped by the server-side configuration).
 
-When `tsh` logs in, the auto-expiring key is stored in `~/.tsh` and is valid for 12 hours by default, unless you specify another interval via `--ttl` flag (capped by he server-side configuration).
+**Usage**: `tsh login [<flags>] [<cluster>]`
+
+### Arguments
+
+* `<cluster>` - the name of the cluster, can be `nodename` of the auth server or a hostname <!--TODO: Confirm this-->
+
+### Flags
+
+| Name | Default Value(s) | Allowed Value(s) | Description
+|------|---------|----------------|----------------------------|
+| `--bind-addr`| none | host:port | Address in the form of host:port to bind to for login command webhook
+| `-o, --out` | none | filepath | Identity output filepath
+| `--format`  | `file` | `file` or `openssh` | Identity format
+
+### [Global Flags](./#tsh-global-flags)
+
+These flags are available for all commands `--login, --proxy, --user, --ttl, --identity, --cert-format, --insecure, --auth, --skip-version, --debug, --jumphost`. Run `tsh help <subcommand>` or see the [Global Flags Section](./#tsh-global-flags)
+
+### Examples
+
+_The proxy endpoint can take a https and ssh port in this format `host:https_port[,ssh_proxy_port]`_
+
+```bsh
+# Use ports 8080 and 8023 for https and SSH proxy:
+$ tsh --proxy=proxy.example.com:8080,8023 login
+
+# Use port 8080 and 3023 (default) for SSH proxy:
+$ tsh --proxy=proxy.example.com:8080 login
+
+# Login and select cluster "two":
+$ tsh --proxy=proxy.example.com login two
+
+# Select cluster "two" using existing credentials and proxy:
+$ tsh login two
+```
 
 ## tsh logout
 
+Deletes the client's cluster certificate
+
+**Usage**: `tsh logout`
+
 ## tsh status
+
+Display the list of proxy servers and retrieved certificates
+
+**Usage**: `tsh status`
 
 # tctl
 
-`tctl` is used to administer a Teleport cluster. It connects to an Auth Server and allows a cluster administrator to manage [Nodes](./concepts/nodes) and [Users](./concepts/users) in the cluster.
+`tctl` is an admin CLI tool used to administer a Teleport cluster. It connects to an Auth Server, meaning that it must be run on the same host with the role `auth`. If you run `tctl` on a non-`auth` node it will show an error.
 
-`tctl` is also a tool which can be used to modify the dynamic configuration of the
-cluster, like creating new user roles or connecting trusted clusters.
+`tctl` allows a cluster administrator to manage all resources in a cluster including nodes, users, tokens, and certificates.
+
+`tctl` can also be used to modify the dynamic configuration of the cluster, like creating new user roles or connecting trusted clusters.
+
+## tctl  help
+Shows help.
+
+**Usage** `tctl help`
+
+## tctl users add
+
+Generate a user invitation token
+## tctl users ls
+
+List all user accounts
+## tctl users rm
+
+Deletes user accounts
+## tctl nodes add
+
+Generate a node invitation token
+## tctl nodes ls
+
+List all active SSH nodes within the cluster
+## tctl tokens add
+
+Create a invitation token
+## tctl tokens rm
+
+Delete/revoke an invitation token
+## tctl tokens ls
+
+List node and user invitation tokens
+## tctl auth export
+
+Export public cluster (CA) keys to stdout
+## tctl auth sign
+
+Create an identity file(s) for a given user
+## tctl auth rotate
+
+Rotate certificate authorities in the cluster
+## tctl create
+
+Create or update a Teleport resource from a YAML file
+## tctl rm
+
+Delete a resource
+## tctl get
+
+Print a YAML declaration of various Teleport resources
+## tctl status
+
+Report cluster status
+## tctl top
+Reports diagnostic information.
+
+The diagnostic metrics endpoint must be enabled with `teleport start --diag-addr=<bind-addr>` for `tctl top` to work.
+
+**Usage** `tctl help`
+
+### Example
+```bsh
+$ teleport start --diag-addr=127.0.0.1:3000
+```
+
+## tctl version
+
+Print cluster version
