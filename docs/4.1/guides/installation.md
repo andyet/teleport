@@ -40,7 +40,7 @@ $ export arch=amd64 # '386' 'arm' on linux or 'amd64' for all distros
 $ curl https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz.sha256
 [Checksum output]
 $ curl -O https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz
-$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz 
+$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz
 # ensure the checksum matches the sha256 checksum on the download page!
 $ tar -xzf teleport-$version-$os-$arch-bin.tar.gz
 $ cd teleport
@@ -63,15 +63,15 @@ $ which teleport
 
 ### Teleport Checksum
 
-Gravitational Teleport provides a checksum from the Downloads page.  This can be used to 
-verify the integrity of our binary. 
+Gravitational Teleport provides a checksum from the Downloads page.  This can be used to
+verify the integrity of our binary.
 
 ![Teleport Checksum](img/teleport-sha.png)
 
 **Checking Checksum on Automated Systems**
 
-If you download Teleport via an automated system, you can programmatically obtain the checksum 
-by adding `.sha256` to the binary. 
+If you download Teleport via an automated system, you can programmatically obtain the checksum
+by adding `.sha256` to the binary.
 
 ```bash
 $ curl https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz.sha256
@@ -81,7 +81,7 @@ $ curl https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz.sha2
 **Checking the Checksum**
 
 ```bash
-$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz 
+$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz
 ```
 
 ## Mac
@@ -93,7 +93,7 @@ TODO
 **Checking the Checksum**
 
 ```bash
-$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz 
+$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz
 ```
 
 ## Windows
