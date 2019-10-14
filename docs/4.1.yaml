@@ -20,7 +20,7 @@ markdown_extensions:
       marker: '[TOC]'
 extra_css: []
 extra_javascript: []
-extra:    
+extra:
     version: 4.1
 pages:
     - Documentation:
@@ -33,6 +33,7 @@ pages:
         - Share Sessions: guides/session-sharing.md
         - Replay Sessions: guides/audit-replay.md
         - Manage User Permissions: guides/user-permissions.md
+        - Manage Nodes: guides/node-management.md
         - Label Nodes: guides/node-labels.md
         - Teleport with OpenSSH: guides/openssh.md
         - Trusted Clusters: trustedclusters.md
