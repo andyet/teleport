@@ -2,8 +2,15 @@
 
 ## teleport
 
+The Teleport daemon is called `teleport`. It can be configured to run one or more "roles" with the `--roles` flags. The arguments to `--roles` correspond to the following services.
+
+| Service | Role Name | Description
+| ------- | --------- | ----------- |
+| [Node](../concepts/nodes) | `node` | Runs a daemon on a node which allows SSH connections from authenticated clients.
+| [Auth](../concepts/auth) | `auth` | Authenticates nodes and users who want access to Teleport Nodes or information about the cluster
+| [Proxy](../concepts/proxy) | `proxy` | The gateway that clients use to connect to the Auth or Node Services
+
 ## teleport start
-`teleport start` starts one or more teleport services
 
 ### Flags
 
