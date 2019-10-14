@@ -63,98 +63,12 @@ $ curl https://get.gravitational.com/teleport-v4.0.8-darwin-amd64-bin.tar.gz.sha
 0826a17b440ac20d4c38ade3d0a5eb1c62a00c4d5eb88e60b5ea627d426aaed2  teleport-v4.0.8-darwin-amd64-bin.tar.gz
 ```
 
-## Definitions
-
-Before diving into configuring and running Teleport, it helps to take a look at
-the [Teleport Architecture](/architecture) and review the key concepts this
-document will be referring to:
-
-|Concept   | Description
-|----------|------------
-|Node      | Synonym to "server" or "computer", something one can "SSH to". A node must be running the [ `teleport` ](../cli-docs/#teleport) daemon with "node" role/service turned on.
-|Certificate Authority (CA) | A pair of public/private keys Teleport uses to manage access. A CA can sign a public key of a user or node, establishing their cluster membership.
-|Teleport Cluster | A Teleport Auth Service contains two CAs. One is used to sign user keys and the other signs node keys. A collection of nodes connected to the same CA is called a "cluster".
-|Cluster Name | Every Teleport cluster must have a name. If a name is not supplied via `teleport.yaml` configuration file, a GUID will be generated.**IMPORTANT:** renaming a cluster invalidates its keys and all certificates it had created.
-|Trusted Cluster | Teleport Auth Service can allow 3rd party users or nodes to connect if their public keys are signed by a trusted CA. A "trusted cluster" is a pair of public keys of the trusted CA. It can be configured via `teleport.yaml` file.
-
-## Teleport Daemon
-
-The Teleport daemon is called [ `teleport` ](./cli-docs/#teleport) and it supports
-the following commands:
-
-|Command     | Description
-|------------|-------------------------------------------------------
-|start       | Starts the Teleport daemon.
-|configure   | Dumps a sample configuration file in YAML format into standard output.
-|version     | Shows the Teleport version.
-|status      | Shows the status of a Teleport connection. This command is only available from inside of an active SSH session.
-|help        | Shows help.
-
-When experimenting, you can quickly start [ `teleport` ](../cli-docs/#teleport)
-with verbose logging by typing [ `teleport start -d` ](./cli-docs/#teleport-start)
-.
+When experimenting, you can quickly start `teleport` with verbose logging by typing `teleport start -d`.
 
 !!! danger "WARNING"
     Teleport stores data in `/var/lib/teleport` . Make sure that
     regular/non-admin users do not have access to this folder on the Auth
     server.
-
-### Systemd Unit File
-
-In production, we recommend starting teleport daemon via an init system like
-`systemd` . Here's the recommended Teleport service unit file for systemd:
-
-``` yaml
-[Unit]
-Description=Teleport SSH Service
-After=network.target
-
-[Service]
-Type=simple
-Restart=on-failure
-ExecStart=/usr/local/bin/teleport start --config=/etc/teleport.yaml --pid-file=/var/run/teleport.pid
-ExecReload=/bin/kill -HUP $MAINPID
-PIDFile=/var/run/teleport.pid
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### Graceful Restarts
-
-If using the systemd service unit file above, executing `systemctl reload
-teleport` will perform a graceful restart, i.e.the Teleport daemon will fork a
-new process to handle new incoming requests, leaving the old daemon process
-running until existing clients disconnect.
-
-!!! warning "Version warning":
-    Graceful restarts only work if Teleport is
-    deployed using network-based storage like DynamoDB or etcd 3.3+. Future
-    versions of Teleport will not have this limitation.
-
-You can also perform restarts/upgrades by sending `kill` signals to a Teleport
-daemon manually.
-
-| Signal                  | Teleport Daemon Behavior
-|-------------------------|---------------------------------------
-| `USR1` | Dumps diagnostics/debugging information into syslog.
-| `TERM` , `INT` or `KILL` | Immediate non-graceful shutdown. All existing connections will be dropped.
-| `USR2` | Forks a new Teleport daemon to serve new connections.
-| `HUP` | Forks a new Teleport daemon to serve new connections **and** initiates the graceful shutdown of the existing process when there are no more clients connected to it.
-
-### Ports
-
-Teleport services listen on several ports. This table shows the default port
-numbers.
-
-|Port      | Service    | Description
-|----------|------------|-------------------------------------------
-|3022      | Node       | SSH port. This is Teleport's equivalent of port `#22` for SSH.
-|3023      | Proxy      | SSH port clients connect to. A proxy will forward this connection to port `#3022` on the destination node.
-|3024      | Proxy      | SSH port used to create "reverse SSH tunnels" from behind-firewall environments into a trusted proxy server.
-|3025      | Auth       | SSH port used by the Auth Service to serve its API to other nodes in a cluster.
-|3080      | Proxy      | HTTPS connection to authenticate `tsh` users and web users into the cluster. The same connection is used to serve a Web UI.
-|3026      | Kubernetes Proxy      | HTTPS Kubernetes proxy (if enabled)
 
 ### Filesystem Layout
 
@@ -837,9 +751,9 @@ dijkstra      c9s93fd9-3333-91d3-9999-c9s93fd98f43     10.1.0.6:3022      distro
 ### Untrusted Auth Servers
 
 Teleport nodes use the HTTPS protocol to offer the join tokens to the auth
-server running on `10.0.10.5` in the example above. In a zero-trust environment,
-you must assume that an attacker can highjack the IP address of the auth server
-e.g. `10.0.10.5` .
+server running on `10.0.10.5` in the example above. In a zero-trust
+environment, you must assume that an attacker can highjack the IP address of
+the auth server e.g. `10.0.10.5`.
 
 To prevent this from happening, you need to supply every new node with an
 additional bit of information about the auth server. This technique is called
@@ -930,9 +844,7 @@ application of arbitrary key:value pairs to each node, called labels. There are
 two kinds of labels:
 
 1. `static labels` do not change over time, while
-
    [ `teleport` ](../cli-docs/#teleport) process is running.
-
    Examples of static labels are physical location of nodes, name of the
    environment (staging vs production), etc.
 
@@ -986,8 +898,8 @@ ssh_service:
 must be set) which also includes shell scripts with a proper [shebang
 line](https://en.wikipedia.org/wiki/Shebang_(Unix)).
 
-**Important:** notice that `command` setting is an array where the first element
-is a valid executable and each subsequent element is an argument, i.e:
+**Important:** notice that `command` setting is an array where the first element is
+a valid executable and each subsequent element is an argument, i.e:
 
 ``` yaml
 # valid syntax:
@@ -1785,10 +1697,9 @@ $ cat cluster_node_keys
 @cert-authority *.graviton-auth ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLNduBoHQaqi+kgkq3gLYjc6JIyBBnCFLgm63b5rtmWl/CJD7T9HWHxZphaS1jra6CWdboLeTp6sDUIKZ/Qw1MKFlfoqZZ8k6to43bxx7DvAHs0Te4WpuS/YRmWFhb6mMVOa8Rd4/9jE+c0f9O/t7X4m5iR7Fp7Tt+R/pjJfr03Loi6TYP/61AgXD/BkVDf+IcU4+9nknl+kaVPSGcPS9/Vbni1208Q+VN7B7Umy71gCh02gfv3rBGRgjT/cRAivuVoH/z3n5UwWg+9R3GD/l+XZKgv+pfe3OHoyDFxYKs9JaX0+GWc504y3Grhos12Lb8sNmMngxxxQ/KUDOV9z+R type=host
 ```
 
-!!! tip "Note":
-    When sharing the @cert-authority make sure that the URL for the
-    proxy is correct. In the above example, `*.graviton-auth` should be changed to
-    teleport.example.com.
+!!! tip "Note": When sharing the @cert-authority make sure that the URL for the
+    proxy is correct. In the above example, `*.graviton-auth` should be changed
+    to teleport.example.com.
 
 On your client machine, you need to import these keys. It will allow your
 OpenSSH client to verify that host's certificates are signed by the trusted CA
@@ -2347,9 +2258,7 @@ clients, etc), the following rules apply:
   upgrade to 3.4 first.
 
 * Teleport clients ( [ `tsh` ](../cli-docs/#tsh) for users and
-
   [ `tctl` ](../cli-docs/#tctl) for admins) may not be compatible
-
   if older than the auth or the proxy server. They will print an error if there
   is an incompatibility.
 
