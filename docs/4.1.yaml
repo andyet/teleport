@@ -30,8 +30,24 @@ pages:
         - Admin Manual: admin-guide.md
         - FAQ: faq.md
     - Guides:
-        - AWS: aws_oss_guide.md
-        - Installation: installation.md
+        - Quickstart: guides/quickstart.md
+        - Installation: guides/installation.md
+        - Production: guides/production.md
+        - Share Sessions: guides/session-sharing.md
+        - Replay Sessions: guides/audit-replay.md
+        - Manage User Permissions: guides/user-permissions.md
+        - Label Nodes: guides/node-labels.md
+        - Teleport with OpenSSH: guides/openssh.md
+        - Trusted Clusters: trustedclusters.md
+        - AWS: aws_oss.md
+    - Concepts:
+        - Teleport Basic Concepts: concepts/basics.md
+        - Teleport Users: concepts/users.md
+        - Teleport Nodes: concepts/nodes.md
+        - Teleport Auth: concepts/auth.md
+        - Teleport Proxy: concepts/proxy.md
+        - Architecture: concepts/architecture.md
+    - Integrations:
         - Okta: ssh_okta.md
         - Active Directory (ADFS): ssh_adfs.md
         - OneLogin: ssh_one_login.md
