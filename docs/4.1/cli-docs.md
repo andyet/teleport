@@ -1,5 +1,7 @@
 # teleport
 
+## teleport
+
 ## teleport start
 `teleport start` starts one or more teleport services
 
