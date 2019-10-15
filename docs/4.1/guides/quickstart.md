@@ -26,7 +26,7 @@ $ export arch=amd64 # '386' 'arm' on linux or 'amd64' for all distros
 $ curl https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz.sha256
 [Checksum output]
 $ curl -O https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz
-$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz 
+$ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz
 # ensure the checksum matches the shaa256 checksum on the download page!
 $ tar -xzf teleport-$version-$os-$arch-bin.tar.gz
 $ cd teleport
@@ -45,7 +45,7 @@ to keep its data. By default it's `/var/lib/teleport`. Then start the `teleport`
 $ mkdir -p /var/lib/teleport
 ```
 
-Now we are ready to start Teleport. 
+Now we are ready to start Teleport.
 
 !!! tip "Background Process"
     Avoid suspending your current shell session by running the process in the background like so: `teleport start > teleport.log 2>&1 &`. Access the process logs with `less teleport.log`._
@@ -56,8 +56,6 @@ Now we are ready to start Teleport.
 ```bash
 $ teleport start # if you are not `root` you may need `sudo`
 ```
-
-
 
 By default Teleport services bind to 0.0.0.0. If you ran teleport without any configuration or flags you should see this output in your console or logfile
 ```
@@ -78,7 +76,7 @@ We've got Teleport running but there are no users recognized by Teleport Auth ye
     The OS user `teleport` must exist! On Linux, if it does not already exist create it with `adduser teleport`. If you do not have the permission to create new users on the VM, run `tctl users add teleport <your-username>` to explicitly map `teleport` to an existing OS user. If you do not map to a real OS user you will get authentication errors later on in this tutorial!
 
 ```bash
-# A new Teleport user will be assigned a 
+# A new Teleport user will be assigned a
 # mapping to an OS user of the same name
 # This is the same as running `tctl users add teleport teleport`
 [teleport@grav-00 ~]$ tctl users add teleport
@@ -94,12 +92,12 @@ You now have a signup token for the Teleport User `teleport` and will need to op
 
 ## Step 4: Register a User
 
-- If the machine where you ran these commands has a web browser installed you should be able to open the URL and connect to Teleport Proxy right away. 
+- If the machine where you ran these commands has a web browser installed you should be able to open the URL and connect to Teleport Proxy right away.
 - If the are working on a remote machine you may need to access the Teleport Proxy via the host machine and port `3080` in a web browser. One simple way to do this is to temporarily append `[HOST_IP] grav-00` to `/etc/hosts`
 
 !!! warning "Warning":
     We haven't provisioned any SSL certs for Teleport yet. Your browser will
-    throw a warning **Your connection is not private**. Click Advanced, and **Proceed to [HOST_IP] (unsafe)** to preview the Teleport UI.   
+    throw a warning **Your connection is not private**. Click Advanced, and **Proceed to [HOST_IP] (unsafe)** to preview the Teleport UI.
 
 <!-- Link to networking/production guide -->
 
@@ -116,14 +114,14 @@ After completing registration you will be logged in automatically
 Let's login using the `tsh` command line tool. Just as in the previous step, you will need to be able to resolve the **hostname** of the cluster to a network accessible IP.
 
 !!! warning "Warning":
-    For the purposes of this quickstart we are using the `--insecure` flag which allows us to skip configuring the HTTP/TLS certificate for Teleport proxy. 
-    
+    For the purposes of this quickstart we are using the `--insecure` flag which allows us to skip configuring the HTTP/TLS certificate for Teleport proxy.
+
     **Caution**: the `--insecure` flag does **not** skip TLS validation for the Auth Server. The self-signed Auth Server certificate expects to be accessed via one of a set of hostnames (ex. `grav-00`). If you attempt to access via `localhost` you will probably get this error: `principal "localhost" not in the set of valid principals for given certificate`.
 
     To resolve this error find your hostname with the `hostname` command and use that instead of `localhost`.
 
     Never use `--insecure` in production unless you terminate SSL at a load balancer. You must configure a HTTP/TLS certificate for the Proxy.
-    
+
 <!-- More on TLS in Prod Guide -->
 
 ```bash
@@ -194,7 +192,7 @@ Session URL : https://grav-00:3080/web/cluster/grav-00/node/a3f67090-99cc-45cf-8
 Copy the Session ID and open a new SSH session.
 
 ```bash
-%~$ tsh join -d --proxy grav-00 --insecure 
+%~$ tsh join -d --proxy grav-00 --insecure
 cd908432-950a-4493-a561-9c272b0e0ea6
 # you will be asked to reauthenticate your user
 $ echo 'howdy'
