@@ -26,6 +26,7 @@ pages:
     - Documentation:
         - Introduction: intro.md
         - Quick Start Guide: quickstart.md
+        - CLI Docs: cli-docs.md
         - Architecture: architecture.md
         - User Manual: user-manual.md
         - Admin Manual: admin-guide.md
