@@ -118,7 +118,11 @@ These flags are available for all commands `--login, --proxy, --user, --ttl, --i
 ### Examples
 
 ```
-tsh ssh --proxy proxy.example.com --user teleport -d root@proxy.example.com
+# Log in to node `grav-00` as OS User `root` with Teleport User `teleport`
+$ tsh ssh --proxy proxy.example.com --user teleport -d root@grav-00
+# `tsh ssh` takes the same arguments as OpenSSH client:
+$ tsh ssh -o ForwardAgent=yes root@grav-00
+$ tsh ssh -o AddKeysToAgent=yes root@grav-00
 ```
 
 ## tsh join
@@ -235,13 +239,21 @@ These flags are available for all commands `--login, --proxy, --user, --ttl, --i
 $ tsh ls
 Node Name Address            Labels
 --------- ------------------ ------
-grav-00   10.164.0.0:3022
-grav-01   10.156.0.2:3022
+grav-00   10.164.0.0:3022    os:linux
+grav-01   10.156.0.2:3022    os:linux
+grav-02   10.156.0.7:3022    os:osx
 $ tsh ls -v
 Node Name Node ID                              Address            Labels
 --------- ------------------------------------ ------------------ ------
-grav-00   52e3e46a-372f-494b-bdd9-a1d25b9d6dec 10.164.0.0:3022
-grav-01   73d86fc7-7c4b-42e3-9a5f-c46e177a29e8 10.156.0.2:3022
+grav-00   52e3e46a-372f-494b-bdd9-a1d25b9d6dec 10.164.0.0:3022    os:linux
+grav-01   73d86fc7-7c4b-42e3-9a5f-c46e177a29e8 10.156.0.2:3022    os:linux
+grav-02  24503590-e8ae-4a0a-ad7a-dd1865c04e30 10.156.0.7:3022     os:osx
+
+# only show nodes with os label set to 'osx':
+$ tsh ls os=osx
+Node Name Address            Labels
+--------- ------------------ ------
+grav-02      10.156.0.7:3022    os:osx
 ```
 
 ## tsh clusters
@@ -264,9 +276,11 @@ These flags are available for all commands `--login, --proxy, --user, --ttl, --i
 $ tsh clusters
 Cluster Name Status
 ------------ ------
-grav-00      online
+staging          online
+production       offline
 $ tsh clusters --quiet
-grav-00 online
+staging online
+production offline
 ```
 
 ## tsh login
@@ -302,11 +316,23 @@ $ tsh --proxy=proxy.example.com:8080,8023 login
 # Use port 8080 and 3023 (default) for SSH proxy:
 $ tsh --proxy=proxy.example.com:8080 login
 
+# Use port 23 as custom SSH port, keep HTTPS proxy port as default
+$ tsh --proxy=work.example.com:,23 login
+
 # Login and select cluster "two":
 $ tsh --proxy=proxy.example.com login two
 
 # Select cluster "two" using existing credentials and proxy:
 $ tsh login two
+
+# Login to the  cluster with a very short-lived certificate
+$ tsh --ttl=1 login
+
+# Login using the local Teleport 'admin' user:
+$ tsh --proxy=proxy.example.com --auth=local --user=admin login
+
+# Login using Github as an SSO provider, assuming the Github connector is called "github"
+$ tsh --proxy=proxy.example.com --auth=github --user=admin login
 ```
 
 ## tsh logout
@@ -320,6 +346,19 @@ Deletes the client's cluster certificate
 Display the list of proxy servers and retrieved certificates
 
 **Usage**: `tsh status`
+
+### Examples
+
+```bash
+$ tsh status
+
+> Profile URL:  https://proxy.example.com:3080
+  Logged in as: johndoe
+  Roles:        admin*
+  Logins:       root, admin, guest
+  Valid until:  2017-04-25 15:02:30 -0700 PDT [valid for 1h0m0s]
+  Extensions:   permit-agent-forwarding, permit-port-forwarding, permit-pty
+```
 
 # tctl
 
@@ -554,6 +593,10 @@ $ tctl auth sign --format openssh --host grav-00
 # Invalid command, only one of --user or --host should be set
 $ tctl auth sign --format openssh --host grav-00 --user teleport -o grav_host
 error: --user or --host must be specified
+# create a certificate with a TTL of 10 years for the jenkins user
+# the jenkins.pem file can later be used with `tsh`
+$ tctl auth sign --ttl=87600h --user=jenkins --out=jenkins.pem
+```
 ```
 
 ## tctl auth rotate
