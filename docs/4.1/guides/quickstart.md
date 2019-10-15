@@ -8,9 +8,9 @@ This tutorial will guide you through the steps needed to install and run Telepor
 
 ### Prerequisites
 - In this tutorial you will start a web UI which must be accessible via a web browser. If you run this tutorial on a remote machine without a GUI, first make sure that this machine's IP can be reached over the your network and that it accepts incoming traffic on port `3080`.
-- We recommend that you read [Teleport Basics](/concepts/basics) before working through this tutorial. If you'd like to dive right in though this is the best place to start!
+- We recommend that you read the [Architecture Guide](../architecture) before working through this tutorial. If you'd like to dive right in though this is the best place to start!
 
-This guide is only meant to demonstrate how to run teleport in a sandbox or demo environment and showcase a few basic tasks you can do with Teleport. **You should not follow this guide if you want to set up Teleport in production. Instead follow the [Production Guide](./production)**
+This guide is only meant to demonstrate how to run teleport in a sandbox or demo environment and showcase a few basic tasks you can do with Teleport. **You should not follow this guide if you want to set up Teleport in production. Instead follow the [Admin Guide](../admin-guide))**
 
 ## Step 1: Install Teleport
 
@@ -168,7 +168,8 @@ Try a few things to get familiar with recorded sessions:
 2. After you end a session, replay it in your browser.
 3. Join the session in your web browser.
 
-<!-- TODO: ?Video showing shared session between browser/CLI? -->
+![Two Recorded Sessions](/img/recorded-session.png?style=grv-image-center-md)
+Here we've started two recorded sessions on the node `grav-00`: one via the web browser and one in the command line. Notice that there are distinct SSH sessions even though we logged in with the `root` user. In the next step you'll learn how to join a shared session.
 
 ## Step 7: Join a Session on the CLI
 
@@ -209,15 +210,14 @@ $ echo "Awesome!"
 
 ## Next Steps
 
-Congratulations! You've completed the Teleport Quickstart. In this guide you've learned how to install Teleport on a single-node and seen a few of the most practical features in action. When you're ready to learn how to set up Teleport for your team we recommend that you read our [Production Guide](./production) to get all the important details. The [Production Guide](./production) will lay out everything you need to safely run Teleport in production including SSL certificates, security considerations, and YAML configuration.
+Congratulations! You've completed the Teleport Quickstart. In this guide you've learned how to install Teleport on a single-node and seen a few of the most practical features in action. When you're ready to learn how to set up Teleport for your team we recommend that you read our [Admin Guide](../admin-guide) to get all the important details. The [Admin Guide](../admin-guide) will lay out everything you need to safely run Teleport in production including SSL certificates, security considerations, and YAML configuration.
 
 ### Guides
 
 If you like to learn by doing check out our collection step-by-step guides for common Teleport tasks.
 
 - [Install Teleport](./installation)
-- [Share Sessions](./session-sharing)
-- [Replay Sessions](./audit-replay)
-- [Manage User Permissions](./user-permissions)
-- [Label Nodes](./node-labels)
-- [Teleport with OpenSSH](./openssh)
+- [Share Sessions](./user-manual/#sharing-sessions)
+- [Manage Users](./admin-guide/#adding-and-deleting-users)
+- [Label Nodes](./admin-guide/#labeling-nodes)
+- [Teleport with OpenSSH](./admin-guide/#using-teleport-with-openssh)
