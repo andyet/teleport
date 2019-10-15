@@ -121,4 +121,8 @@ file.
 * [Teleport Users](./users)
 * [Teleport Auth](./auth)
 * [Teleport Proxy](./proxy)
+<<<<<<< HEAD:docs/4.1/architecture/nodes.md
 
+=======
+* [Architecture](./architecture)
+>>>>>>> saving the file would help:docs/4.1/concepts/nodes.md
