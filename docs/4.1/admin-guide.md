@@ -79,8 +79,12 @@ document will be referring to:
 
 ## Teleport Daemon
 
+<<<<<<< HEAD
 The Teleport daemon is called [ `teleport` ](./cli-docs/#teleport) and it supports
 the following commands:
+=======
+The Teleport daemon is called `teleport` and it supports the following commands:
+>>>>>>> andyet/concepts
 
 |Command     | Description
 |------------|-------------------------------------------------------
@@ -89,6 +93,12 @@ the following commands:
 |version     | Shows the Teleport version.
 |status      | Shows the status of a Teleport connection. This command is only available from inside of an active SSH session.
 |help        | Shows help.
+<<<<<<< HEAD
+=======
+
+When experimenting, you can quickly start `teleport` with verbose logging by typing
+`teleport start -d`.
+>>>>>>> andyet/concepts
 
 When experimenting, you can quickly start [ `teleport` ](../cli-docs/#teleport)
 with verbose logging by typing [ `teleport start -d` ](./cli-docs/#teleport-start)
