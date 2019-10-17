@@ -218,41 +218,6 @@ storage.
     `/var/lib/teleport/log` to allow them to combine all audit events into the
     same audit log. [Learn how to deploy Teleport in HA Mode.](../admin-guide#high-availability))
 
-## Recording Proxy Mode
-
-In this mode, the proxy terminates (decrypts) the SSH connection using the
-certificate supplied by the client via SSH agent forwarding and then establishes
-its own SSH connection to the final destination server, effectively becoming an
-authorized "man in the middle". This allows the proxy server to forward SSH
-session data to the auth server to be recorded, as shown below:
-
-![recording-proxy](../img/recording-proxy.svg?style=grv-image-center-lg)
-
-The recording proxy mode, although _less secure_, was added to allow Teleport
-users to enable session recording for OpenSSH's servers running `sshd`, which is
-helpful when gradually transitioning large server fleets to Teleport.
-
-We consider the "recording proxy mode" to be less secure for two reasons:
-
-1. It grants additional privileges to the Teleport proxy. In the default mode,
-   the proxy stores no secrets and cannot "see" the decrypted data. This makes a
-   proxy less critical to the security of the overall cluster. But if an
-   attacker gains physical access to a proxy node running in the "recording"
-   mode, they will be able to see the decrypted traffic and client keys stored
-   in proxy's process memory.
-2. Recording proxy mode requires the SSH agent forwarding. Agent forwarding is
-   required because without it, a proxy will not be able to establish the 2nd
-   connection to the destination node.
-
-However, there are advantages of proxy-based session recording too. When
-sessions are recorded at the nodes, a root user can add iptables rules to
-prevent sessions logs from reaching the Auth Server. With sessions recorded at
-the proxy, users with root privileges on nodes have no way of disabling the
-audit.
-
-See the [admin guide](../admin-guide#recorded-sessions) to learn how to turn on the
-recording proxy mode.
-
 ## Storage Back-Ends
 
 Different types of cluster data can be configured with different storage

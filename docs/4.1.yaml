@@ -16,6 +16,7 @@ markdown_extensions:
   - admonition
   - def_list
   - footnotes
+  - codehilite
   - toc:
       marker: '[TOC]'
 extra_css: []
@@ -36,6 +37,8 @@ pages:
     - Guides:
         # TODO: Add How-To Guide on Managing Nodes, Users, Trusted Clusters
         # etc. any common task should have a guide
+        - Add a Node to a Cluster: guides/node-join.md
+        - Label Nodes: guides/node-labels.md
     - Integrations:
         - Okta: ssh_okta.md
         - Active Directory (ADFS): ssh_adfs.md
