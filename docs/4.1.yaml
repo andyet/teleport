@@ -26,27 +26,16 @@ pages:
     - Documentation:
         - Introduction: intro.md
         - Quick Start Guide: quickstart.md
+        - Installation: installation.md
+        - Production: production.md
+        - CLI Docs: cli-docs.md
+        - YAML Configuration: configuration.md
         - User Manual: user-manual.md
         - Admin Manual: admin-guide.md
         - FAQ: faq.md
     - Guides:
-        - Quickstart: guides/quickstart.md
-        - Installation: guides/installation.md
-        - Production: guides/production.md
-        - Share Sessions: guides/session-sharing.md
-        - Replay Sessions: guides/audit-replay.md
-        - Manage User Permissions: guides/user-permissions.md
-        - Label Nodes: guides/node-labels.md
-        - Teleport with OpenSSH: guides/openssh.md
-        - Trusted Clusters: trustedclusters.md
-        - AWS: aws_oss.md
-    - Concepts:
-        - Teleport Basic Concepts: concepts/basics.md
-        - Teleport Users: concepts/users.md
-        - Teleport Nodes: concepts/nodes.md
-        - Teleport Auth: concepts/auth.md
-        - Teleport Proxy: concepts/proxy.md
-        - Architecture: concepts/architecture.md
+        # TODO: Add How-To Guide on Managing Nodes, Users, Trusted Clusters
+        # etc. any common task should have a guide
     - Integrations:
         - Okta: ssh_okta.md
         - Active Directory (ADFS): ssh_adfs.md
