@@ -1,8 +1,8 @@
 # Production Guide
 
-Minimal Config example
+TODO: This is WIP document
 
-Include security considerations. Address vulns in quay?
+<!-- TODO: Minimal Config example -->
 
 [TOC]
 
@@ -145,6 +145,10 @@ Cluster](./guides/node-join) which shows how to generate or set join tokens and
 use them to add nodes.
 
 ## Security Considerations
+
+<!-- TODO Address vulns in quay? -->
+
+<!-- TODO SSL for Webproxy & Auth Section -->
 
 ### CA Pinning
 
