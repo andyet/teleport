@@ -39,6 +39,7 @@ pages:
         # etc. any common task should have a guide
         - Add a Node to a Cluster: guides/node-join.md
         - Label Nodes: guides/node-labels.md
+        - Manage Tokens: guides/token-management.md
     - Integrations:
         - Okta: ssh_okta.md
         - Active Directory (ADFS): ssh_adfs.md
