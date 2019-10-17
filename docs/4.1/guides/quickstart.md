@@ -46,7 +46,7 @@ $ curl https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz.sha2
 [Checksum output]
 $ curl -O https://get.gravitational.com/teleport-$version-$os-$arch-bin.tar.gz
 $ shasum -a 256 teleport-$version-$os-$arch-bin.tar.gz
-# ensure the checksum matches the shaa256 checksum on the download page!
+# ensure the checksum matches the sha256 checksum on the download page!
 $ tar -xzf teleport-$version-$os-$arch-bin.tar.gz
 $ cd teleport
 $ ./install
@@ -119,7 +119,7 @@ NOTE: Make sure grav-00:3080 points at a Teleport proxy which users can access.
 ```
 
 If you want to map to a different OS user, `electric` for instance, you can
-specify like so: `tctl users add teleport electric` . You can also add asssign
+specify like so: `tctl users add teleport electric` . You can also add assign
 multiple mappings like this `tctl users add teleport electric,joe,root` .
 
 You now have a signup token for the Teleport User `teleport` and will need to
@@ -263,7 +263,7 @@ Copy the Session ID and open a new SSH session.
 ``` bash
 %~$ tsh join -d --proxy grav-00 --insecure
 cd908432-950a-4493-a561-9c272b0e0ea6
-# you will be asked to reauthenticate your user
+# you will be asked to re-authenticate your user
 $ echo 'howdy'
 howdy
 # you might have run more stuff here...
