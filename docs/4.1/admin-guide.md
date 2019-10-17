@@ -1,87 +1,5 @@
 # Teleport Admin Manual
 
-This manual covers the installation and configuration of Teleport and the
-ongoing management of a Teleport cluster. It assumes that the reader has good
-understanding of Linux administration.
-
-## Installing
-
-To install, download the official binaries from the [Teleport
-Downloads](https://gravitational.com/teleport/download/) section on our web site
-and run:
-
-```
-$ tar -xzf teleport-binary-release.tar.gz
-$ sudo make install
-```
-
-### Installing from Source
-
-Gravitational Teleport is written in Go language. It requires Golang v1.8.3 or
-newer.
-
-``` bash
-# get the source & build:
-$ mkdir -p $GOPATH/src/github.com/gravitational
-$ cd $GOPATH/src/github.com/gravitational
-$ git clone https://github.com/gravitational/teleport.git
-$ cd teleport
-$ make full
-
-# create the default data directory before starting:
-$ sudo mkdir -p /var/lib/teleport
-```
-
-### Teleport Checksum
-
-Gravitational Teleport provides a checksum from the Downloads page. This can be
-used to verify the integrity of our binary.
-
-![Teleport Checksum](img/teleport-sha.png)
-
-**Checking Checksum on Mac OS**
-
-``` bash
-$ shasum -a 256 teleport-v4.0.8-darwin-amd64-bin.tar.gz
-0826a17b440ac20d4c38ade3d0a5eb1c62a00c4d5eb88e60b5ea627d426aaed2  teleport-v4.0.8-darwin-amd64-bin.tar.gz
-```
-
-**Checking Checksum on Linux**
-
-``` bash
-$ sha256sum teleport-v4.0.8-darwin-amd64-bin.tar.gz
-0826a17b440ac20d4c38ade3d0a5eb1c62a00c4d5eb88e60b5ea627d426aaed2  teleport-v4.0.8-darwin-amd64-bin.tar.gz
-```
-
-**Checking Checksum on Automated Systems**
-
-If you download Teleport via an automated system, you can programmatically
-obtain the checksum by adding `.sha256` to the binary.
-
-``` bash
-$ curl https://get.gravitational.com/teleport-v4.0.8-darwin-amd64-bin.tar.gz.sha256
-0826a17b440ac20d4c38ade3d0a5eb1c62a00c4d5eb88e60b5ea627d426aaed2  teleport-v4.0.8-darwin-amd64-bin.tar.gz
-```
-
-When experimenting, you can quickly start `teleport` with verbose logging by typing `teleport start -d`.
-
-!!! danger "WARNING"
-    Teleport stores data in `/var/lib/teleport` . Make sure that
-    regular/non-admin users do not have access to this folder on the Auth
-    server.
-
-### Filesystem Layout
-
-By default, a Teleport node has the following files present. The location of all
-of them is configurable.
-
-| Full path                 | Purpose                                                                                                                                                                                                                                |
-|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/etc/teleport.yaml` | Teleport configuration file (optional).|
-| `/usr/local/bin/teleport` | Teleport daemon binary.|
-| `/usr/local/bin/tctl` | Teleport admin tool. It is only needed for auth servers.|
-| `/var/lib/teleport` | Teleport data directory. Nodes keep their keys and certificates there. Auth servers store the audit log and the cluster keys there, but the audit log storage can be further configured via `auth_service` section in the config file.|
-
 ## Configuration
 
 You should use a [configuration file](#configuration-file) to configure the
@@ -751,9 +669,9 @@ dijkstra      c9s93fd9-3333-91d3-9999-c9s93fd98f43     10.1.0.6:3022      distro
 ### Untrusted Auth Servers
 
 Teleport nodes use the HTTPS protocol to offer the join tokens to the auth
-server running on `10.0.10.5` in the example above. In a zero-trust
-environment, you must assume that an attacker can highjack the IP address of
-the auth server e.g. `10.0.10.5`.
+server running on `10.0.10.5` in the example above. In a zero-trust environment,
+you must assume that an attacker can highjack the IP address of the auth server
+e.g. `10.0.10.5` .
 
 To prevent this from happening, you need to supply every new node with an
 additional bit of information about the auth server. This technique is called
@@ -849,7 +767,6 @@ two kinds of labels:
    environment (staging vs production), etc.
 
 2. `dynamic labels` also known as "label commands" allow to generate labels at
-
    runtime. Teleport will execute an external command on a node at a
    configurable frequency and the output of a command becomes the label value.
    Examples include reporting load averages, presence of a process, time after
@@ -898,8 +815,8 @@ ssh_service:
 must be set) which also includes shell scripts with a proper [shebang
 line](https://en.wikipedia.org/wiki/Shebang_(Unix)).
 
-**Important:** notice that `command` setting is an array where the first element is
-a valid executable and each subsequent element is an argument, i.e:
+**Important:** notice that `command` setting is an array where the first element
+is a valid executable and each subsequent element is an argument, i.e:
 
 ``` yaml
 # valid syntax:
@@ -1697,9 +1614,10 @@ $ cat cluster_node_keys
 @cert-authority *.graviton-auth ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLNduBoHQaqi+kgkq3gLYjc6JIyBBnCFLgm63b5rtmWl/CJD7T9HWHxZphaS1jra6CWdboLeTp6sDUIKZ/Qw1MKFlfoqZZ8k6to43bxx7DvAHs0Te4WpuS/YRmWFhb6mMVOa8Rd4/9jE+c0f9O/t7X4m5iR7Fp7Tt+R/pjJfr03Loi6TYP/61AgXD/BkVDf+IcU4+9nknl+kaVPSGcPS9/Vbni1208Q+VN7B7Umy71gCh02gfv3rBGRgjT/cRAivuVoH/z3n5UwWg+9R3GD/l+XZKgv+pfe3OHoyDFxYKs9JaX0+GWc504y3Grhos12Lb8sNmMngxxxQ/KUDOV9z+R type=host
 ```
 
-!!! tip "Note": When sharing the @cert-authority make sure that the URL for the
-    proxy is correct. In the above example, `*.graviton-auth` should be changed
-    to teleport.example.com.
+!!! tip "Note":
+    When sharing the @cert-authority make sure that the URL for the
+    proxy is correct. In the above example, `*.graviton-auth` should be changed to
+    teleport.example.com.
 
 On your client machine, you need to import these keys. It will allow your
 OpenSSH client to verify that host's certificates are signed by the trusted CA
