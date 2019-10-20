@@ -25,8 +25,8 @@ extra:
 pages:
     - Documentation:
         - Introduction: intro.md
-        - Quick Start Guide: quickstart.md
         - CLI Docs: cli-docs.md
+        - Quick Start Guide: guides/quickstart.md
         - Architecture: architecture.md
         - User Manual: user-manual.md
         - Admin Manual: admin-guide.md
@@ -38,6 +38,7 @@ pages:
         - Single sign-on (SSO): ssh_sso.md
     - Guides:
         - AWS: aws_oss_guide.md
+        - Installation: installation.md
         - Okta: ssh_okta.md
         - Active Directory (ADFS): ssh_adfs.md
         - OneLogin: ssh_one_login.md
