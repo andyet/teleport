@@ -121,4 +121,3 @@ file.
 * [Teleport Users](./users)
 * [Teleport Auth](./auth)
 * [Teleport Proxy](./proxy)
-
